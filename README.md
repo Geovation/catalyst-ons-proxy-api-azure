@@ -1,2 +1,5 @@
-# catalyst-ons-proxy-api
-A proxy API for appending OS geographies to API calls
+# Office for National Statistics data proxy API
+
+A proxy API for appending OS lookup data to API calls for OS data.
+
+
