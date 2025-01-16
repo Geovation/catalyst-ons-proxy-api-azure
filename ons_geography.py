@@ -3,15 +3,18 @@
 import duckdb
 
 
-def get_ons_from_long_lat(longitude: float, latitude: float) -> str:
-    '''Get the ONS Geography data from the given longitude and latitude'''
+def get_ons_from_postcode(postcode: str) -> str:
+    '''Get the ONS Geography data from the given postcode'''
+
     conn = duckdb.connect("ons_postcodes.duckdb")
 
     # In the database load spatial
     conn.load_extension("spatial")
 
-    postcode_data = conn.sql(
-        "select * from postcodes where postcode = 'BA1 1RG'").fetchall()
+    postcode_data = conn.execute(
+        "select * from postcodes where replace(postcode, ' ', '') = $1", [postcode.replace(' ', '')]).fetchall()
 
     conn.close()
-    return postcode_data
+    if len(postcode_data) == 0:
+        return None
+    return postcode_data[0]
