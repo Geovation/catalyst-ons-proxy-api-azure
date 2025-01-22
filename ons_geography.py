@@ -11,10 +11,22 @@ def get_ons_from_postcode(postcode: str) -> str:
     # In the database load spatial
     conn.load_extension("spatial")
 
-    postcode_data = conn.execute(
-        "select * from postcodes where replace(postcode, ' ', '') = $1", [postcode.replace(' ', '')]).fetchall()
+    query = conn.execute(
+        "select * from postcodes where replace(postcode, ' ', '') = $1", [postcode.replace(' ', '')])
+
+    descriptions = query.description
+
+    postcode_data = query.fetchall()
 
     conn.close()
     if len(postcode_data) == 0:
         return None
-    return postcode_data[0]
+
+    # Convert the data to a dictionary using the column names
+    ons_data = {}
+    for i in range(len(postcode_data[0])):
+        # Don't include longitude/latitude/geometry
+        if descriptions[i][0] not in ['longitude', 'latitude', 'geometry']:
+            ons_data[descriptions[i][0]] = postcode_data[0][i]
+
+    return ons_data

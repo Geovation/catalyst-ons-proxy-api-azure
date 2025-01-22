@@ -40,10 +40,10 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
                 postcode = result.get("DPA", {}).get("POSTCODE")
 
                 # Get the ONS Geography data
-                ons_geography = get_ons_from_postcode(postcode)
+                ons_postcode = get_ons_from_postcode(postcode)
 
                 # Add the ONS Geography data to the result
-                result["ons_geography"] = ons_geography
+                result["ons_postcode"] = ons_postcode
 
             return func.HttpResponse(json.dumps(response_json), status_code=200, mimetype="application/json")
 
