@@ -5,13 +5,16 @@ import requests
 
 import azure.functions as func
 
+from azure.functions import HttpRequest, HttpResponse
+
 from ons_geography import get_ons_from_postcodes
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
+
 @app.function_name('places')
-@app.route(route="places/{operation}", methods=["GET"])
-def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
+@app.route(route="places/{operation}")
+def http_trigger(req: HttpRequest) -> HttpResponse:
     '''HTTP trigger function provides the route into the application.'''
 
     # The operation is one of "find", "postcode", "uprn", "nearest", "bbox", "radius", "polygon"
