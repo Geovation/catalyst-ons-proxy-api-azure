@@ -12,7 +12,7 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 @app.route(route="places/{operation}", methods=["GET"])
 def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
-    '''HTTP trigger function provides the route into the application'''
+    '''HTTP trigger function provides the route into the application.'''
 
     # The operation is one of "find", "postcode", "uprn", "nearest", "bbox", "radius", "polygon"
     operation = req.route_params.get("operation")
