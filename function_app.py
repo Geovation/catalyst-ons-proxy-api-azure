@@ -9,7 +9,7 @@ from ons_geography import get_ons_from_postcodes
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-
+@app.function_name('places')
 @app.route(route="places/{operation}", methods=["GET"])
 def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     '''HTTP trigger function provides the route into the application.'''
