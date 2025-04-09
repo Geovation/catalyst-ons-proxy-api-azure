@@ -6,7 +6,7 @@ import duckdb
 def get_ons_from_postcodes(postcodes):
     '''Get the ONS Geography data from the postcodes'''
 
-    conn = duckdb.connect('data/ons_postcodes.duckdb')
+    conn = duckdb.connect('/data/ons_postcodes.duckdb')
 
     # In the database load spatial
     conn.load_extension("spatial")
