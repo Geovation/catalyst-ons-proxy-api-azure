@@ -1,7 +1,5 @@
 '''Using a DuckDB database to get ONS Geography data'''
 
-import json
-
 import duckdb
 
 
