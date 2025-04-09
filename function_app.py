@@ -2,9 +2,10 @@
 
 import json
 import requests
+
 import azure.functions as func
 
-from ons_geography import get_ons_from_postcode
+from ons_geography import get_ons_from_postcodes
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -34,16 +35,34 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
             # Get the JSON response
             response_json = response.json()
 
+            # The return data is a list of results with a "DPA" key and/or an "LPI" key
+            # The DPA object is the delivery point address - use the POSTCODE key
+            # The LPI object is the land and property identifier - use the POSTAL_ADDRESS_CODE key
+
+            # Create an array of postcodes by trying first from the LPI object or the DPA object
+            postcodes = []
+            for result in response_json["results"]:
+                postcode = result.get("LPI", {}).get(
+                    "POSTAL_ADDRESS_CODE") or result.get("DPA", {}).get("POSTCODE")
+                if postcode and postcode.replace(' ', '') not in postcodes:
+                    postcodes.append(postcode.replace(' ', ''))
+
+            ons_data_array = get_ons_from_postcodes(postcodes)
+
             # For each result, append the ONS Geography data
             for result in response_json["results"]:
                 # Get the postcode
                 postcode = result.get("DPA", {}).get("POSTCODE")
 
-                # Get the ONS Geography data
-                ons_postcode = get_ons_from_postcode(postcode)
+                # Find the ONS Geography data for the postcode
+                ons_postcode_data = None
+                for ons_data in ons_data_array:
+                    if ons_data.get("postcode") == postcode.replace(' ', ''):
+                        ons_postcode_data = ons_data
+                        break
 
                 # Add the ONS Geography data to the result
-                result["ons_postcode"] = ons_postcode
+                result["ons_postcode_data"] = ons_postcode_data
 
             return func.HttpResponse(json.dumps(response_json), status_code=200, mimetype="application/json")
 
