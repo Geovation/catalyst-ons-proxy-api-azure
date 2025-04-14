@@ -55,12 +55,13 @@ def http_trigger(req: HttpRequest) -> HttpResponse:
             # For each result, append the ONS Geography data
             for result in response_json["results"]:
                 # Get the postcode
-                postcode = result.get("DPA", {}).get("POSTCODE")
+                postcode = result.get("LPI", {}).get(
+                    "POSTAL_ADDRESS_CODE") or result.get("DPA", {}).get("POSTCODE")
 
                 # Find the ONS Geography data for the postcode
                 ons_postcode_data = None
                 for ons_data in ons_data_array:
-                    if ons_data.get("postcode") == postcode.replace(' ', ''):
+                    if ons_data.get("postcode").replace(' ', '') == postcode.replace(' ', ''):
                         ons_postcode_data = ons_data
                         break
 
