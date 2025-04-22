@@ -12,7 +12,7 @@ def get_ons_from_postcodes(postcodes):
     if not os.path.exists(db):
         db = 'data/ons_postcodes.duckdb'
 
-    conn = duckdb.connect(db)
+    conn = duckdb.connect(database=db, read_only=True)
 
     # For all postcodes in the postcode array, remove any whitespace
     postcodes = [postcode.replace(' ', '') for postcode in postcodes]
