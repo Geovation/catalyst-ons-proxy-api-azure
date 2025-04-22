@@ -40,6 +40,7 @@ jobs:
       # Download file from https://github.com/Geovation/catalyst-ons-geographies/releases/latest/download/ons_postcodes.duckdb
       - name: Download ONS Postcodes file
         run: |
+          mkdir -p data
           curl "https://github.com/Geovation/catalyst-ons-geographies/releases/latest/download/ons_postcodes.duckdb" -L -o data/ons_postcodes.duckdb
 
       - name: Zip artifact for deployment
