@@ -20,7 +20,7 @@ def get_ons_from_postcodes(postcodes):
     postcode_list = ','.join(f'\'{p}\'' for p in postcodes)
 
     query = conn.execute(  # Not parameterised - fix this
-        "select * from vw_postcodes where replace(postcode, ' ', '') IN (" + postcode_list + ")")
+        "select * from vw_postcodes where postcode IN (" + postcode_list + ")")
 
     descriptions = query.description
 
