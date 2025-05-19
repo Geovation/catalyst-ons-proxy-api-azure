@@ -109,3 +109,9 @@ The solution integrates logging to Azure App Insights, and configures a custom e
 | Event name | Parameters | Description                                               |
 | ---------- | ---------- | --------------------------------------------------------- |
 | Places API | Operation  | Records every call the Places API, and the operation name |
+
+## Environment setup
+
+| Environment variable                  | Description                                                       |
+| ------------------------------------- | ----------------------------------------------------------------- |
+| APPLICATIONINSIGHTS_CONNECTION_STRING | Connection string for the application insights instance (if used) |
