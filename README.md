@@ -101,3 +101,11 @@ The data returned by the proxy API is the same as the data returned by the OS Pl
   }
 }
 ```
+
+## Logging
+
+The solution integrates logging to Azure App Insights, and configures a custom event to track calls to the Places API.
+
+| Event name | Parameters | Description                                               |
+| ---------- | ---------- | --------------------------------------------------------- |
+| Places API | Operation  | Records every call the Places API, and the operation name |
