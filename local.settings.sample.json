@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": true,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "",
+    "OS_API_KEY": "",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": ""
+  },
+  "ConnectionStrings": {}
+}

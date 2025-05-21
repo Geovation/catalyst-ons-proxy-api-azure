@@ -1,13 +1,21 @@
 '''Azure Function App to append ONS Geography data to OS API calls'''
 
 import json
+
 import requests
 
 import azure.functions as func
 
 from azure.functions import HttpRequest, HttpResponse
 
+from azure.monitor.events.extension import track_event
+from azure.monitor.opentelemetry import configure_azure_monitor
+
 from ons_geography import get_ons_from_postcodes
+
+configure_azure_monitor(
+    logger_name=__name__,
+)
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -32,6 +40,10 @@ def http_trigger(req: HttpRequest) -> HttpResponse:
     try:
         # Call the OS Places API
         response = requests.get(api_url, timeout=10)
+
+        # Log the request
+        # We simply record the call to Places and the operation name
+        track_event("Places API", {"operation": operation})
 
         # If the response is successful, append the ONS Geography data
         if response.status_code == 200:
